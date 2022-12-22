@@ -1,9 +1,11 @@
-Fluent Migration Tools
-======================
+# Fluent Migration Tools - Thunderbird Fork
 
 Programmatically create Fluent files from existing content in both legacy
 and Fluent formats. Use recipes written in Python to migrate content for each
 of your localizations.
+
+This is a fork for performing Thunderbird string migrations. Usage is slightly
+different than upsteam due to the use of a monorepo.
 
 `migrate-l10n` is a CLI script which uses the `fluent.migrate` module under
 the hood to run migrations on existing translations.
@@ -14,31 +16,29 @@ errors, without trying to apply it.
 Installation
 ------------
 
-Install from PyPI:
+- Clone this repo somewhere
 
-    pip install fluent.migrate[hg]
+- pip install "<path-to->/tb-fluent-migrate[hg]"
 
-If you only want to use the `MigrationContext` API, you can drop the
-requirement on `python-hglib`:
+Alternatively, install right from the repo:
 
-    pip install fluent.migrate
+- pip install "fluent.migrate[hg] @ git+https://github.com/jfx2006/tb-fluent-migrate"
+
 
 Usage
 -----
 
 Migrations consist of _recipes_, which are applied to a _localization repository_, based on _template files_.
-You can find recipes for Firefox in `mozilla-central/python/l10n/fluent_migrations/`,
-the reference repository is [gecko-strings](https://hg.mozilla.org/l10n/gecko-strings/) or _quarantine_.
-You apply those migrations to l10n repositories in [l10n-central](https://hg.mozilla.org/l10n-central/), or to `gecko-strings` for testing.
+You can find recipes for Thunderbird in `comm-central/python/l10n/tb_fluent_migrations/`,
+the reference repository is [comm-strings-quarantine](https://hg.mozilla.org/projects/comm-strings-quarantine/) or _quarantine_.
+You apply those migrations to l10n repositories in [comm-l10n](https://hg.mozilla.org/projects/comm-l10n/).
 
 The migrations are run as python modules, so you need to have their file location in `PYTHONPATH`.
 
 An example would look like
 
-    $ migrate-l10n --lang it --reference-dir gecko-strings --localization-dir l10n-central/it bug_1451992_preferences_sitedata bug_1451992_preferences_translation
+    $ migrate-l10n --locale it --reference-dir comm-strings-quarantine --localization-dir comm-l10n bug_1802387_langpack_defines
 
-Contact
--------
-
- - mailing list: https://lists.mozilla.org/listinfo/tools-l10n
- - bugzilla: [Open Bugs](https://bugzilla.mozilla.org/buglist.cgi?component=Fluent%20Migration&product=Localization%20Infrastructure%20and%20Tools&bug_status=__open__) - [New Bug](https://bugzilla.mozilla.org/enter_bug.cgi?product=Localization%20Infrastructure%20and%20Tools&component=Fluent%20Migration)
+Upstream
+--------
+https://hg.mozilla.org/l10n/fluent-migration/

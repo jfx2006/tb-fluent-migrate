@@ -14,15 +14,32 @@ from hglib.util import b, cmdbuilder
 
 
 class Blame(object):
-    def __init__(self, client):
+    def __init__(self, client, cwd=None):
         self.client = client
+        self._cwd = cwd
         self.users = []
         self.blame = {}
 
+    @property
+    def cwd(self):
+        if self._cwd is None:
+            return self.client.root()
+        else:
+            return mozpath.join(self.client.root(), self._cwd.encode("utf-8"))
+        
+    def file_path_relative(self, file_path):
+        if self._cwd is None:
+            return file_path
+        check_val = f"{self._cwd}"
+        if file_path.startswith(check_val):
+            return file_path[len(check_val)+1:]
+        return file_path
+
     def attribution(self, file_paths):
+
         args = cmdbuilder(
             b('annotate'), *[b(p) for p in file_paths], template='json',
-            date=True, user=True, cwd=self.client.root())
+            date=True, user=True, cwd=self.cwd)
         blame_json = self.client.rawcommand(args)
         file_blames = json.loads(blame_json)
 
@@ -33,7 +50,8 @@ class Blame(object):
                 'blame': self.blame}
 
     def handleFile(self, file_blame):
-        path = mozpath.normsep(file_blame['path'])
+        path = mozpath.normsep(self.file_path_relative(file_blame['path']))
+
 
         try:
             parser = getParser(path)
@@ -71,7 +89,7 @@ class Blame(object):
                 self.blame[path][key] = [userid, timestamp]
 
     def readFile(self, parser, path):
-        parser.readFile(os.path.join(self.client.root().decode('utf-8'), path))
+        parser.readFile(os.path.join(self.cwd.decode('utf-8'), path))
 
 
 if __name__ == '__main__':

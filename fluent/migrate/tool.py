@@ -28,14 +28,15 @@ class Migrator(object):
     def __init__(self, locale, reference_dir, localization_dir, dry_run):
         self.locale = locale
         self.reference_dir = reference_dir
-        self.localization_dir = localization_dir
+        self.localization_repo = localization_dir
+        self.localization_dir = os.path.join(localization_dir, locale)
         self.dry_run = dry_run
         self._client = None
 
     @property
     def client(self):
         if self._client is None:
-            self._client = hglib.open(self.localization_dir, 'utf-8')
+            self._client = hglib.open(self.localization_repo, 'utf-8')
         return self._client
 
     def close(self):
@@ -67,7 +68,7 @@ class Migrator(object):
         # Annotate localization files used as sources by this migration
         # to preserve attribution of translations.
         files = ctx.localization_resources.keys()
-        blame = Blame(self.client).attribution(files)
+        blame = Blame(self.client, self.locale).attribution(files)
         changesets = convert_blame_to_changesets(blame)
         known_legacy_translations = set()
 
