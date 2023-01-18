@@ -51,9 +51,10 @@ class TestSerialize(unittest.TestCase):
             walked,
             [
                 ('.', ['localization'], []),
-                ('localization', ['d1', 'd2'], []),
-                ('localization/d1', [], ['f1']),
-                ('localization/d2', [], ['f2']),
+                ('localization', ['de'], []),
+                ('localization/de', ['d1', 'd2'], []),
+                ('localization/de/d1', [], ['f1']),
+                ('localization/de/d2', [], ['f2']),
             ]
         )
 
@@ -71,7 +72,7 @@ class TestCommit(unittest.TestCase):
         os.makedirs(loc_dir)
         with open(os.path.join(loc_dir, 'f1'), 'w') as f:
             f.write('first line\n')
-        client = hglib.init(self.migrator.localization_dir)
+        client = hglib.init(self.migrator.localization_repo)
         client.open()
         client.commit(
             message='Initial commit',
