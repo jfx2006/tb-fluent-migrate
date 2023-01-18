@@ -4,3 +4,5 @@
 ^fluent.migrate.egg-info$
 ^build
 ^dist
+
+\.idea
