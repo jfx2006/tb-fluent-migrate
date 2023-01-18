@@ -42,7 +42,7 @@ target = should be migrated.
         with open(os.path.join(self.root, 'pl', 'd1', 'f1.ftl'), 'w') as f:
             f.write('one = first line\n')
         self.client = client = hglib.init(
-            os.path.join(self.root, 'pl'),
+            os.path.join(self.root),
             encoding='utf-8'
         )
         client.open()
@@ -69,7 +69,7 @@ target = should be migrated.
         tool.main(
             'pl',
             os.path.join(self.root, 'ref'),
-            os.path.join(self.root, 'pl'),
+            os.path.join(self.root),
             [MockMigrationModule()],
             False,
         )
