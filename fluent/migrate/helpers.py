@@ -13,7 +13,7 @@ from __future__ import absolute_import
 
 from fluent.syntax import FluentParser, ast as FTL
 from fluent.syntax.visitor import Transformer
-from .transforms import Transform, CONCAT, COPY, COPY_PATTERN
+from .transforms import Transform, CONCAT, COPY, COPY_PATTERN, REPLACE
 from .errors import NotSupportedError, InvalidTransformError
 
 
@@ -53,7 +53,7 @@ def TERM_REFERENCE(name):
 
 class IntoTranforms(Transformer):
     IMPLICIT_TRANSFORMS = ("CONCAT",)
-    FORBIDDEN_TRANSFORMS = ("PLURALS", "REPLACE", "REPLACE_IN_TEXT")
+    FORBIDDEN_TRANSFORMS = ("PLURALS",)
 
     def __init__(self, substitutions):
         self.substitutions = substitutions
@@ -74,7 +74,7 @@ class IntoTranforms(Transformer):
             raise NotSupportedError(
                 "{} may not be used with transforms_from(). It requires "
                 "additional logic in Python code.".format(name))
-        if name in ('COPY', 'COPY_PATTERN'):
+        if name in ('COPY', 'COPY_PATTERN', 'REPLACE'):
             args = (
                 self.into_argument(arg) for arg in node.arguments.positional
             )
@@ -83,6 +83,8 @@ class IntoTranforms(Transformer):
                 for arg in node.arguments.named}
             if name == 'COPY':
                 return COPY(*args, **kwargs)
+            elif name == 'REPLACE':
+                return REPLACE(*args, **kwargs)
             return COPY_PATTERN(*args, **kwargs)
         return self.generic_visit(node)
 
@@ -143,6 +145,30 @@ def transforms_from(ftl, **substitutions):
         new-key = Hardcoded text { COPY(file_dtd, "string.key") }
         \""", file_dtd="very/long/path/to/a/file.dtd")
 
+    REPLACE may also be used. The only tested use case is to do brand string
+    replacements from DTD strings.
+
+    <!ENTITY update.noUpdatesFound      "&brandShortName; is up to date">
+
+    First define a dictionary with the replacements outside of the migrate
+    function like (must be wrapped in a dict() function call):
+
+        about_replacements = dict({
+            "&brandShortName;": TERM_REFERENCE("brand-short-name"),
+        })
+
+    Note: In the TERM_REFERENCE replacement, omit the initial "-". It winds up
+    in the final result somehow.
+
+    Then, use transforms_from:
+
+        transforms_from(\"""
+    update-no-updates-found = { REPLACE(source, "update.noUpdatesFound", about_replacements) }
+    \""", source=source, about_replacements=about_replacements)
+
+    If doing multiple string migrations in a single transforms_from template,
+    your replacements dictionary can have multiple key, value pairs and be used
+    for all REPLACE transforms.
     """
 
     parser = FluentParser(with_spans=False)
