@@ -7,9 +7,9 @@ import six
 from six.moves import zip_longest
 
 import fluent.syntax.ast as FTL
-from fluent.migrate.helpers import transforms_from, MESSAGE_REFERENCE, TERM_REFERENCE
-from fluent.migrate.transforms import CONCAT, COPY, REPLACE
-from fluent.migrate.errors import NotSupportedError, InvalidTransformError
+from fluent.migratetb.helpers import transforms_from, MESSAGE_REFERENCE, TERM_REFERENCE
+from fluent.migratetb.transforms import CONCAT, COPY, REPLACE
+from fluent.migratetb.errors import NotSupportedError, InvalidTransformError
 
 
 class TestTransformsFrom(unittest.TestCase):

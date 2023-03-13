@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 import unittest
 
-from fluent.migrate.changesets import convert_blame_to_changesets
+from fluent.migratetb.changesets import convert_blame_to_changesets
 
 
 class TestBlameToChangesets(unittest.TestCase):

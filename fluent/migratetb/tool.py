@@ -10,10 +10,10 @@ import sys
 import hglib
 import six
 
-from fluent.migrate.context import MigrationContext
-from fluent.migrate.errors import MigrationError
-from fluent.migrate.changesets import convert_blame_to_changesets
-from fluent.migrate.blame import Blame
+from fluent.migratetb.context import MigrationContext
+from fluent.migratetb.errors import MigrationError
+from fluent.migratetb.changesets import convert_blame_to_changesets
+from fluent.migratetb.blame import Blame
 
 
 @contextmanager

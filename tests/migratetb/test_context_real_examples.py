@@ -6,10 +6,10 @@ import os
 import unittest
 
 import fluent.syntax.ast as FTL
-from fluent.migrate.util import ftl_resource_to_json, to_json
-from fluent.migrate.context import MigrationContext
-from fluent.migrate.helpers import VARIABLE_REFERENCE, MESSAGE_REFERENCE
-from fluent.migrate.transforms import (
+from fluent.migratetb.util import ftl_resource_to_json, to_json
+from fluent.migratetb.context import MigrationContext
+from fluent.migratetb.helpers import VARIABLE_REFERENCE, MESSAGE_REFERENCE
+from fluent.migratetb.transforms import (
     CONCAT, COPY, PLURALS, REPLACE_IN_TEXT, REPLACE
 )
 

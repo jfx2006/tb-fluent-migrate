@@ -5,7 +5,7 @@ from __future__ import absolute_import
 import logging
 
 import fluent.syntax.ast as FTL
-from fluent.migrate.util import fold
+from fluent.migratetb.util import fold
 
 from .transforms import Source
 from .util import get_message, skeleton
@@ -84,7 +84,7 @@ class MigrationContext(InternalContext):
         build the list of dependencies for the transformed message.
 
         For transforms that merely copy legacy messages or Fluent patterns,
-        using `fluent.migrate.helpers.transforms_from` is recommended.
+        using `fluent.migratetb.helpers.transforms_from` is recommended.
         """
         def get_sources(acc, cur):
             if isinstance(cur, Source):

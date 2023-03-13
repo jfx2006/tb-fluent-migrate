@@ -8,13 +8,13 @@ import six
 import unittest
 
 import fluent.syntax.ast as FTL
-from fluent.migrate.errors import (
+from fluent.migratetb.errors import (
     EmptyLocalizationError,
     UnreadableReferenceError,
 )
-from fluent.migrate.util import ftl, ftl_resource_to_json, to_json
-from fluent.migrate.context import MigrationContext
-from fluent.migrate.transforms import CONCAT, COPY
+from fluent.migratetb.util import ftl, ftl_resource_to_json, to_json
+from fluent.migratetb.context import MigrationContext
+from fluent.migratetb.transforms import CONCAT, COPY
 
 
 def here(*parts):

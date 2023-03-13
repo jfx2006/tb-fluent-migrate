@@ -1,4 +1,7 @@
 # Changelog
+## fluent.migratetb 0.11.2 (March 2023)
+
+  - Thunderbird fork.
 
 ## fluent.migrate 0.11 (March 12, 2021)
 

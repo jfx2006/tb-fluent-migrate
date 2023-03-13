@@ -7,7 +7,7 @@ import os
 import shutil
 import tempfile
 
-from fluent.migrate.tool import Migrator
+from fluent.migratetb.tool import Migrator
 import hglib
 
 

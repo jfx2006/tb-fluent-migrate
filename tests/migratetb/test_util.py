@@ -5,8 +5,8 @@ from __future__ import absolute_import
 import unittest
 
 import fluent.syntax.ast as FTL
-from fluent.migrate.util import fold, ftl_resource_to_ast, skeleton
-from fluent.migrate.transforms import CONCAT, COPY, REPLACE, Source
+from fluent.migratetb.util import fold, ftl_resource_to_ast, skeleton
+from fluent.migratetb.transforms import CONCAT, COPY, REPLACE, Source
 
 
 def get_source(acc, cur):

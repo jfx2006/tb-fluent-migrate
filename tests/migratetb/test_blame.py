@@ -9,7 +9,7 @@ import shutil
 import tempfile
 import hglib
 
-from fluent.migrate.blame import Blame
+from fluent.migratetb.blame import Blame
 
 
 class MockedBlame(Blame):

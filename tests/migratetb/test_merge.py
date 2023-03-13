@@ -7,10 +7,10 @@ from compare_locales.parser import PropertiesParser, DTDParser
 
 import fluent.syntax.ast as FTL
 from fluent.syntax.parser import FluentParser
-from fluent.migrate.util import parse, ftl, ftl_resource_to_json
-from fluent.migrate.merge import merge_resource
-from fluent.migrate.transforms import COPY
-from fluent.migrate.evaluator import Evaluator
+from fluent.migratetb.util import parse, ftl, ftl_resource_to_json
+from fluent.migratetb.merge import merge_resource
+from fluent.migratetb.transforms import COPY
+from fluent.migratetb.evaluator import Evaluator
 
 
 class MockContext(unittest.TestCase):

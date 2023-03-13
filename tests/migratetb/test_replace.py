@@ -6,10 +6,10 @@ import unittest
 from compare_locales.parser import PropertiesParser
 
 import fluent.syntax.ast as FTL
-from fluent.migrate.util import parse, ftl_pattern_to_json
-from fluent.migrate.helpers import VARIABLE_REFERENCE
-from fluent.migrate.transforms import REPLACE
-from fluent.migrate.evaluator import Evaluator
+from fluent.migratetb.util import parse, ftl_pattern_to_json
+from fluent.migratetb.helpers import VARIABLE_REFERENCE
+from fluent.migratetb.transforms import REPLACE
+from fluent.migratetb.evaluator import Evaluator
 
 
 class MockContext(unittest.TestCase):

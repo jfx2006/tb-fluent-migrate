@@ -9,12 +9,12 @@ import shutil
 import tempfile
 import hglib
 
-from fluent.migrate.helpers import transforms_from
-from fluent.migrate import tool
+from fluent.migratetb.helpers import transforms_from
+from fluent.migratetb import tool
 
 
 class MockMigrationModule(object):
-    __name__ = 'tests.migrate.some'
+    __name__ = 'tests.migratetb.some'
     @staticmethod
     def migrate(ctx):
         '''No bug - test conversions, part {index}.'''

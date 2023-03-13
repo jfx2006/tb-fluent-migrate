@@ -1,7 +1,7 @@
 *.tox
 *.pyc
 *.eggs
-fluent.migrate.egg-info
+fluent.migratetb.egg-info
 build
 dist
 .idea

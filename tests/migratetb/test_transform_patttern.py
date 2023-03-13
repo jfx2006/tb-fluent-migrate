@@ -4,10 +4,10 @@ from __future__ import absolute_import
 
 import unittest
 
-from fluent.migrate.context import MigrationContext
-from fluent.migrate.transforms import TransformPattern
-from fluent.migrate.util import ftl_pattern_to_json
-from fluent.migrate import validator
+from fluent.migratetb.context import MigrationContext
+from fluent.migratetb.transforms import TransformPattern
+from fluent.migratetb.util import ftl_pattern_to_json
+from fluent.migratetb import validator
 from fluent.syntax import ast as FTL
 
 

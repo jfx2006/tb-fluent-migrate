@@ -7,13 +7,13 @@ import six
 from compare_locales.parser import PropertiesParser, DTDParser
 
 import fluent.syntax.ast as FTL
-from fluent.migrate.errors import NotSupportedError
-from fluent.migrate.transforms import (
+from fluent.migratetb.errors import NotSupportedError
+from fluent.migratetb.transforms import (
     LegacySource, COPY, PLURALS, REPLACE,
     COPY_PATTERN,
 )
-from fluent.migrate.util import parse
-from fluent.migrate.helpers import VARIABLE_REFERENCE
+from fluent.migratetb.util import parse
+from fluent.migratetb.helpers import VARIABLE_REFERENCE
 
 
 class TestNotSupportedError(unittest.TestCase):

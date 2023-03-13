@@ -6,9 +6,9 @@ import ast
 import six
 from six.moves import zip_longest
 
-from fluent.migrate import transforms
-from fluent.migrate.errors import MigrationError
-from fluent.migrate.helpers import transforms_from
+from fluent.migratetb import transforms
+from fluent.migratetb.errors import MigrationError
+from fluent.migratetb.helpers import transforms_from
 from fluent.syntax import ast as FTL
 from fluent.syntax.visitor import Visitor
 from compare_locales import mozpath
@@ -166,9 +166,9 @@ class MigrateAnalyzer(ast.NodeVisitor):
         ):
             return self.call_ctx(node)
         dotted = full_name(node.func, self.global_assigns)
-        if dotted == 'fluent.migrate.helpers.transforms_from':
+        if dotted == 'fluent.migratetb.helpers.transforms_from':
             return self.call_helpers_transforms_from(node)
-        if dotted.startswith('fluent.migrate.'):
+        if dotted.startswith('fluent.migratetb.'):
             return self.call_transform(node, dotted)
         self.generic_visit(node)
 
@@ -217,7 +217,7 @@ class MigrateAnalyzer(ast.NodeVisitor):
 
     def call_transform(self, node, dotted):
         module, called = dotted.rsplit('.', 1)
-        if module not in ('fluent.migrate', 'fluent.migrate.transforms'):
+        if module not in ('fluent.migratetb', 'fluent.migratetb.transforms'):
             return
         transform = getattr(transforms, called)
         if not issubclass(transform, transforms.Source):
