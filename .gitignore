@@ -1,7 +1,8 @@
 *.tox
 *.pyc
 *.eggs
-fluent.migratetb.egg-info
+__pycache__
+/fluent.migratetb.egg-info
 build
 dist
 .idea

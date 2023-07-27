@@ -1,9 +1,0 @@
-\.tox
-\.pyc$
-^.eggs$
-^fluent.migratetb.egg-info$
-^build
-^dist
-
-\.idea
-^.git$
