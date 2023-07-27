@@ -32,5 +32,5 @@ setup(
     tests_require=[
         'mock',
     ],
-    test_suite='tests.migrate'
+    test_suite='tests.migratetb'
 )
