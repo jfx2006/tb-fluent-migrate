@@ -3,13 +3,12 @@ from typing import Dict, Iterable, Tuple, TypedDict, cast
 
 import argparse
 import json
-import os
+from os.path import join
 
-from compare_locales.parser import getParser, Junk
+from compare_locales.parser import Junk, getParser
 from compare_locales.parser.fluent import FluentEntity
-from compare_locales import mozpath
-import hglib
-from hglib.util import b, cmdbuilder
+
+from .repo_client import RepoClient
 
 BlameData = Dict[str, Dict[str, Tuple[int, float]]]
 "File path -> message key -> [userid, timestamp]"
@@ -20,19 +19,8 @@ class BlameResult(TypedDict):
     blame: BlameData
 
 
-class LineBlame(TypedDict):
-    date: tuple[float, float]
-    line: str
-    user: str
-
-
-class FileBlame(TypedDict):
-    lines: list[LineBlame]
-    path: str
-
-
 class Blame:
-    def __init__(self, client: hglib.client.hgclient, cwd=None):
+    def __init__(self, client: RepoClient, cwd=None):
         self.client = client
         self._cwd = cwd
         self.users: list[str] = []
@@ -54,25 +42,12 @@ class Blame:
         return file_path
 
     def attribution(self, file_paths: Iterable[str]) -> BlameResult:
-        args = cmdbuilder(
-            b"annotate",
-            *[b(p) for p in file_paths],
-            template="json",
-            date=True,
-            user=True,
-            cwd=self.cwd,
-        )
-        blame_json = self.client.rawcommand(args)
-        file_blames = json.loads(blame_json)
-
-        for file_blame in file_blames:
-            self.handleFile(file_blame)
-
+        for file in file_paths:
+            blame = self.client.blame(file)
+            self.handleFile(file, blame)
         return {"authors": self.users, "blame": self.blame}
 
-    def handleFile(self, file_blame: FileBlame):
-        path = mozpath.normsep(self.file_path_relative(file_blame["path"]))
-
+    def handleFile(self, path: str, file_blame: list[Tuple[str, int]]):
         try:
             parser = getParser(path)
         except UserWarning:
@@ -95,21 +70,17 @@ class Blame:
                     for attr in e.attributes
                 ]
             for key, (val_start, val_end) in key_vals:
-                entity_lines = file_blame["lines"][
+                entity_lines = file_blame[
                     (e.ctx.linecol(val_start)[0] - 1) : e.ctx.linecol(val_end)[0]
                 ]
-                # ignore timezone
-                entity_lines.sort(key=lambda blame: -blame["date"][0])
-                line_blame = entity_lines[0]
-                user = line_blame["user"]
-                timestamp = line_blame["date"][0]  # ignore timezone
+                user, timestamp = max(entity_lines, key=lambda x: x[1])
                 if user not in self.users:
                     self.users.append(user)
                 userid = self.users.index(user)
-                self.blame[path][key] = cast(Tuple[int, float], [userid, timestamp])
+                self.blame[path][key] = (userid, timestamp)
 
     def readFile(self, parser, path: str):
-        parser.readFile(os.path.join(self.cwd.decode("utf-8"), path))
+        parser.readFile(join(self.client.root, path))
 
 
 if __name__ == "__main__":
@@ -117,6 +88,6 @@ if __name__ == "__main__":
     parser.add_argument("repo_path")
     parser.add_argument("file_path", nargs="+")
     args = parser.parse_args()
-    blame = Blame(hglib.open(args.repo_path))
+    blame = Blame(RepoClient(args.repo_path))
     attrib = blame.attribution(args.file_path)
     print(json.dumps(attrib, indent=4, separators=(",", ": ")))
