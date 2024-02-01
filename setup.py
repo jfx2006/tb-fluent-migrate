@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="fluent.migratetb",
-    version="0.12.0.1",
+    version="0.13.0.1",
     description="Toolchain to migrate legacy translation to Fluent. (Thunderbird fork)",
     author="Mozilla",
     author_email="tb-builds@thunderbird.net",
