@@ -20,26 +20,10 @@ class BlameResult(TypedDict):
 
 
 class Blame:
-    def __init__(self, client: RepoClient, cwd=None):
+    def __init__(self, client: RepoClient):
         self.client = client
-        self._cwd = cwd
         self.users: list[str] = []
         self.blame: BlameData = {}
-
-    @property
-    def cwd(self):
-        if self._cwd is None:
-            return self.client.root()
-        else:
-            return mozpath.join(self.client.root(), self._cwd.encode("utf-8"))
-
-    def file_path_relative(self, file_path):
-        if self._cwd is None:
-            return file_path
-        check_val = f"{self._cwd}"
-        if file_path.startswith(check_val):
-            return file_path[len(check_val) + 1 :]
-        return file_path
 
     def attribution(self, file_paths: Iterable[str]) -> BlameResult:
         for file in file_paths:

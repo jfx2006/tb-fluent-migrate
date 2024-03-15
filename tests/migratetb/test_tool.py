@@ -11,7 +11,9 @@ import hglib
 
 class TestSerialize(unittest.TestCase):
     def setUp(self):
-        self.root = tempfile.mkdtemp()
+        self.repo = tempfile.mkdtemp()
+        self.root = join(self.repo, "de")
+        os.makedirs(self.root)
         self.migrator = Migrator(
             "de",
             join(self.root, "reference"),
@@ -74,7 +76,7 @@ class TestHgCommit(unittest.TestCase):
         os.makedirs(loc_dir)
         with open(join(loc_dir, "f1"), "w") as f:
             f.write("first line\n")
-        client = hglib.init(self.migrator.localization_repo)
+        client = hglib.init(join(self.root, "localization"))
         client.open()
         client.commit(
             message="Initial commit",

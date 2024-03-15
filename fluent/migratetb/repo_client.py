@@ -26,8 +26,8 @@ def git(root: str, *args: str) -> str:
 class RepoClient:
     def __init__(self, root: str):
         self.root = root
-        if isdir(join(root, ".hg")):
-            self.hgclient = hglib.open(root, "utf-8")
+        if isdir(join(root, "../.hg")):
+            self.hgclient = hglib.open(join(root, ".."), "utf-8")
         elif isdir(join(root, ".git")):
             self.hgclient = None
             stdout = git(self.root, "rev-parse", "--is-inside-work-tree")

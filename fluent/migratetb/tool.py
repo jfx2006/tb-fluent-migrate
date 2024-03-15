@@ -70,7 +70,7 @@ class Migrator:
         # Annotate localization files used as sources by this migration
         # to preserve attribution of translations.
         files = ctx.localization_resources.keys()
-        blame = Blame(self.client, self.locale).attribution(files)
+        blame = Blame(self.client).attribution(files)
         changesets = convert_blame_to_changesets(blame)
         known_legacy_translations = set()
 

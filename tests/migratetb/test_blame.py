@@ -74,12 +74,13 @@ jane = first
 
 class TestHgIntegration(unittest.TestCase):
     def setUp(self):
-        self.root = tempfile.mkdtemp()
+        self.repo = tempfile.mkdtemp()
+        self.root = join(self.repo, "a")
         self.timestamps = (1272837600, 1335996000)
         makedirs(join(self.root, "d1"))
         with open(join(self.root, "d1", "f1.ftl"), "w") as f:
             f.write("one = first line\n")
-        self.hgclient = hgclient = hglib.init(self.root, encoding="utf-8")
+        self.hgclient = hgclient = hglib.init(self.repo, encoding="utf-8")
         hgclient.open()
         hgclient.commit(
             message="Initial commit",
@@ -101,7 +102,8 @@ class TestHgIntegration(unittest.TestCase):
         shutil.rmtree(self.root)
 
     def test_attribution(self):
-        blame = Blame(self.client)
+        client = RepoClient(self.root)
+        blame = Blame(client)
         rv = blame.attribution(["d1/f1.ftl"])
         client.close()
         self.assertEqual(
