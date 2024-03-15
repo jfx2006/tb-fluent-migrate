@@ -474,7 +474,7 @@ class PLURALS(LegacySource):
         ][0]
 
         # Match keys to legacy forms in the order they are defined in Gecko's
-        # PluralForm.jsm. Filter out empty forms.
+        # PluralForm.sys.mjs. Filter out empty forms.
         pairs = [
             (key, var)
             for key, var in zip(keys, forms)
